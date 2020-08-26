@@ -1,0 +1,653 @@
+<html>
+	<head>
+	    <link rel='stylesheet' href='webjars/bootstrap/3.3.4/css/bootstrap.min.css'>
+	    <link rel='stylesheet' href='webjars/bootstrap/3.3.4/css/bootstrap-theme.min.css'>
+	</head>
+	<style>
+		body {
+		  padding-top: 20px;
+		  padding-bottom: 20px;
+		}
+		
+		.navbar {
+		  margin-bottom: 20px;
+		}
+		
+		.jumbotron {
+		  background-color: #F9D1AA;
+		}    		    	
+	</style>
+    <script type='text/javascript' src='webjars/jquery/2.0.3/jquery.min.js'>
+	</script>
+	<script type='text/javascript' src='webjars/bootstrap/3.3.4/js/bootstrap.min.js'>
+	</script>
+	<body>
+	    <div class="modal fade" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false" data-show="false">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h1>Retrieving information from server...</h1>
+	                </div>
+	                <div class="modal-body">
+	                    <div class="progress progress-striped active">
+	                        <div class="progress-bar progress-bar-info" style="width: 100%;">
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div id="infoDialog" class="modal fade">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <!-- dialog body -->
+	                <div class="modal-body" id="infoDialogContent">
+	                </div>
+	                <!-- dialog buttons -->
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-primary">OK</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <script type="text/javascript">
+			var myApp;
+			myApp = myApp || (function() {
+			
+				var pleaseWaitDiv = $('#pleaseWaitDialog');
+				var infoDiv = $('#infoDialog');
+				return {
+					showPleaseWait : function() {
+						pleaseWaitDiv.modal('show');
+					},
+					hidePleaseWait : function() {
+						pleaseWaitDiv.modal('hide');
+					},
+					showMessage : function(msg) {
+						$("#infoDialogContent").html(msg);
+						infoDiv.modal('show');
+					}
+				};
+			})();
+			
+			$("#infoDialog").on("show", function() { 
+				$("#infoDialog a.btn").on("click", function(e) {
+					$("#infoDialog").modal('hide'); 
+				});
+			});
+		</script>
+	    <div class="container">
+	        <nav class="navbar navbar-default">
+	            <div class="container-fluid">
+	                <div class="navbar-header">
+	                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	                        <span class="sr-only">Toggle navigation</span>
+	                        <span class="icon-bar">
+	                        </span>
+	                        <span class="icon-bar">
+	                        </span>
+	                        <span class="icon-bar">
+	                        </span>
+	                    </button>
+	                    <a class="navbar-brand" href="#">MoneySend</a>
+	                </div>
+	                <div id="navbar" class="navbar-collapse collapse">
+	                    <ul class="nav navbar-nav">
+	                        <li class="active">
+	                            <a href="#">Home</a>
+	                        </li>
+	                        <li>
+	                            <a href="#">About</a>
+	                        </li>
+	                        <li>
+	                            <a href="#">Contact admin</a>
+	                        </li>
+	                        <li class="dropdown">
+	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret">
+	                        </span>
+	                    </a>
+	                    <ul class="dropdown-menu" role="menu">
+	                        <li class="dropdown-header">Operations</li>
+	                        		                        						  <li>
+	                        <a href="#">inquireCardMapping</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">createCardMapping</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">transferPost1</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">deleteSubscriber</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">checkPANEligibility</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">transferPost</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">sanctionScore</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">transferReversalPost</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">updateCardMapping</a>
+	                    </li>
+	                        		                        						  <li>
+	                        <a href="#">deleteCardMapping</a>
+	                    </li>
+	                    		                    						  <li class="divider">
+	                </li>
+	                <li class="dropdown-header">More Details</li>
+	                <li>
+	                    <a href="#">Test results</a>
+	                </li>
+	            </ul>
+	        </li>
+	    </ul>
+	</div>
+	<!--/.nav-collapse -->
+	</div>
+	<!--/.container-fluid -->
+	</nav>
+	<div class="jumbotron">
+	    <h1>MoneySend</h1>
+	    <p></p>
+	</div>
+						  
+	<div class="col-lg-12">
+		<h4>inquireCardMapping</h4>
+		<p>This resource will allow a customer to view the existing Card Mappings associated with the customer's MoneySend subscription using an API call. 
+A customer has the ability to view card mappings created under the customer's MoneySend subscription. In addition, the Card Mapping Inquire will provide certain data necessary to submit a MoneySend Transfer transaction, Update Card Mapping, or Delete Card Mapping if that information is not already available.Card Mappings are stored in a secure encrypted environment which is a PCI compliant data storage facility managed by Mastercard.
+</p>
+		<form class="navbar-form navbar-left" id="inquireCardMapping" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">InquireMappingRequest</span>
+			    <input type="text" class="form-control" name="InquireMappingRequest" placeholder="InquireMappingRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#inquireCardMapping").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#inquireCardMapping').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'PUT',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>createCardMapping</h4>
+		<p>Allows a customer to create a card mapping for their MoneySend subscription using an API call.
+ Creation of a Card Mapping allows a Mastercard customer to associate their card account to a unique identifier or ‘alias' within the customer's MoneySend enrollment profile. This unique identifier can be used to send or receive funds via the MoneySend service without sharing card account information.This also enables MoneySend to execute transactions between senders and receivers who bank with different Mastercard Members while protecting the card account information of each customer.Card Mappings are stored in a secure encrypted environment which is a PCI compliant data storage facility managed by Mastercard.</p>
+		<form class="navbar-form navbar-left" id="createCardMapping" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">CreateMappingRequest</span>
+			    <input type="text" class="form-control" name="CreateMappingRequest" placeholder="CreateMappingRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#createCardMapping").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#createCardMapping').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'POST',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>transferPost1</h4>
+		<p>Use the Transfer resource to transfer funds to a recipient with an eligible Mastercard card account.</p>
+		<form class="navbar-form navbar-left" id="transferPost1" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">FundingRequestV3</span>
+			    <input type="text" class="form-control" name="FundingRequestV3" placeholder="FundingRequestV3" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#transferPost1").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#transferPost1').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'POST',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>deleteSubscriber</h4>
+		<p>This resource allows the removal of a Subscriber ID profile, along with all Card Mappings, using an API call. If a customer chooses to change their Subscriber ID, the current Subscriber ID should be deleted and a new Subscriber ID created. This resource would also be used if the Subscriber ID was no longer needed for participation in the MoneySend service. </p>
+		<form class="navbar-form navbar-left" id="deleteSubscriber" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">DeleteSubscriberIdRequest</span>
+			    <input type="text" class="form-control" name="DeleteSubscriberIdRequest" placeholder="DeleteSubscriberIdRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#deleteSubscriber").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#deleteSubscriber').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'PUT',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>checkPANEligibility</h4>
+		<p>The Primary Account Number (PAN) is the card number. The Mastercard MoneySend Platform is a global offering, however there may be specific countries, receiving institutions (RIs) or account ranges that are blocked from participation in the offering. The Card is eligible if it hasn't been blocked for receiving a MoneySend payment. PAN eligibility provides the capability to check the sending and receiving card for a transaction in a single call.  This resource enables you to verify that a cardholder's account is eligible to receive MoneySend transactions and provides additional information for sending and receiving cards: the Interbank Card Association (ICA) code of the issuer, currency code (alpha and numeric), country code (alpha and numeric), brand acceptance code, and brand product code will be returned. </p>
+		<form class="navbar-form navbar-left" id="checkPANEligibility" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">PanEligibilityRequest</span>
+			    <input type="text" class="form-control" name="PanEligibilityRequest" placeholder="PanEligibilityRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#checkPANEligibility").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#checkPANEligibility').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'PUT',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>transferPost</h4>
+		<p>Use the Transfer resource to transfer funds to a recipient with an eligible Mastercard card account.</p>
+		<form class="navbar-form navbar-left" id="transferPost" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">PaymentRequestV3</span>
+			    <input type="text" class="form-control" name="PaymentRequestV3" placeholder="PaymentRequestV3" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#transferPost").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#transferPost').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'POST',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>sanctionScore</h4>
+		<p>MoneySend™ Sanction Screening ServiceMastercard® provides the capability for financial institutions to screen a Sender's or Recipient's name against OFAC's Specially Designated Nationals and Blocked Persons List (OFAC SDN List), and other select lists from the sending and receiving countries. Originating Institutions (OIs) and Receiving Institutions (RIs) that would like to screen the sender or recipient's name can now take advantage of the MoneySend Sanction Screening Service.The service is intended to help financial institutions meet Anti-Money Laundering (AML) compliance obligations.How it works1. The OI or RI sends the sender or recipient name and country to screen. 2. Based on the likelihood of a match, a score between 000 and 100 is generated per name. A higher score indicates a closer match to names on the applicable screening list, while lower scores indicate a less likely match.The service uses advanced matching algorithms:Proprietary artificial intelligence and advanced algorithms such as: pattern matching, phonetics algorithms, field matching, and fuzzy logic.Phonetics algorithms deal with the different spelling and variations form of a name: Meier and Meyer or Sinclair and St. Clair, etc.Fuzzy logics deals with nicknames or short forms of given names: Bob for Robert, Liz for Elizabeth, or a variation of the surname- Westy for West.3. The service returns the list name of the list with the highest score*. 4. OIs and RIs may use the score to determine if the sender or recipient meets their AML obligations.*Screening lists are available on the Publications page, List of Manuals, on Mastercard Connect. Screening lists will be set by region. The regions sanctions lists are configurable. Use Sanction Scoring inquiry to get the sanction screening score which will help to effectively manage money transfers</p>
+		<form class="navbar-form navbar-left" id="sanctionScore" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">SanctionScoreServiceRequest</span>
+			    <input type="text" class="form-control" name="SanctionScoreServiceRequest" placeholder="SanctionScoreServiceRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#sanctionScore").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#sanctionScore').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'POST',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>transferReversalPost</h4>
+		<p>The Transfer Reversal resource is a request to reverse a previously submitted Transfer and is only available in extremely limited circumstances. Transfer reversal must be submitted within 24 hours of processing the original transfer request - this applies to the payment transaction only. Reversal ProcessingThe following limited reversals or corrections are permitted for MoneySend Payment Transactions:1.Capability to reverse a Funding Transaction and credit the refund to the sender's Funding Account.2.Capability to process an online reversal request within one calendar day of the date the MoneySend Payment Transaction was authorized only in the event of a documented clerical error.3.Capability to ensure that the Receiving Institution has approved the MoneySend Payment Transaction reversal request, prior to crediting the refund to the sender's Funding Account.  Use this resource to reverse a previously submitted Transfer. </p>
+		<form class="navbar-form navbar-left" id="transferReversalPost" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">TransferReversalRequest</span>
+			    <input type="text" class="form-control" name="TransferReversalRequest" placeholder="TransferReversalRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#transferReversalPost").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#transferReversalPost').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'POST',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>updateCardMapping</h4>
+		<p>This resource will allow a customer to update an existing Card Mapping associated with the customer's MoneySend subscription using an API call. The information provided in the update request becomes the newly-updated record.  A customer has the ability to change certain information in an existing card mapping in order to keep the account information current. The data fields available for update are: Alias, Default Indicator, Account information, Cardholder Name, and Cardholder Address information. The account mapping is uniquely identified by a combination of Subscriber ID, Subscriber Type, Account Usage, and Alias data elements.Card Mappings are stored in a secure encrypted environment which is a PCI compliant data storage facility managed by Mastercard.</p>
+		<form class="navbar-form navbar-left" id="updateCardMapping" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">mappingId</span>
+			    <input type="text" class="form-control" name="mappingId" placeholder="mappingId" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">UpdateMappingRequest</span>
+			    <input type="text" class="form-control" name="UpdateMappingRequest" placeholder="UpdateMappingRequest" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#updateCardMapping").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#updateCardMapping').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'PUT',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	<div class="col-lg-12">
+		<h4>deleteCardMapping</h4>
+		<p>This resource will allow a customer to delete an existing Card Mapping associated with the customer's MoneySend subscription using an API call.</p>
+		<form class="navbar-form navbar-left" id="deleteCardMapping" role="search">
+			<div class="input-group">
+			    <span class="input-group-addon" id="basic-addon1">mappingId</span>
+			    <input type="text" class="form-control" name="mappingId" placeholder="mappingId" aria-describedby="basic-addon1">
+			    </input>
+			</div>
+			<button type="submit" class="btn btn-success">Run <span class="glyphicon glyphicon-play-circle" aria-hidden="true">
+				</span>
+			</button>
+		</form>
+	</div>
+	<script>
+		$("#deleteCardMapping").submit(function(event) {
+			event.preventDefault();
+			myApp.showPleaseWait();
+		
+			var uri = "api?";
+			$.each($('#deleteCardMapping').serializeArray(), function(i, field) {
+				if(uri.charAt(uri.lastIndexOf('/') + 1) == '{' || uri.charAt(uri.lastIndexOf('/') == '?')) {
+					uri = uri.substring(0, uri.lastIndexOf('/')) + uri.substring(uri.lastIndexOf('/') + 1, uri.length);
+				}
+				uri = uri.replace('{' + field.name + '}', '');
+				uri = uri + field.name + "=" + field.value + "&";
+			});
+					
+			uri = uri.substring(0, uri.length-1);
+		
+			$.ajax({
+			  url : uri,
+			  type: 'DELETE',
+			  error: function() {
+				alert("Submission failure");
+				myApp.hidePleaseWait();
+			  },
+			  
+			  complete: function(res) {
+			  },
+			  
+			  success: function(res) {
+				myApp.hidePleaseWait();
+				myApp.showMessage(res);
+			  }
+			});        	  
+		  });
+	  </script>
+	    		 	
+			</div>
+		</div>
+	<!-- /container -->
+	</body>
+</html>
