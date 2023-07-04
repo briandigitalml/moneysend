@@ -1,0 +1,175 @@
+---
+openapi: 3.0.1
+info:
+  version: '1.0'
+  title: HarvestHUB
+paths:
+  "/v2/{type}/{id}/codegen":
+    get:
+      operationId: applyTemplate
+      parameters:
+      - name: X-Request-ID
+        in: header
+        schema:
+          type: string
+      - name: type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: templateSetID
+        in: query
+        schema:
+          type: integer
+          format: int64
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  "/v2/specifications/{id}/patch":
+    post:
+      operationId: patchSpec
+      parameters:
+      - name: X-Request-ID
+        in: header
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PatchSpecification"
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  "/v2/customerconfig":
+    get:
+      operationId: getCustomerConfig
+      parameters:
+      - name: X-Request-ID
+        in: header
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/json: {}
+  "/v2/access/permissionsets/{type}/{id}":
+    get:
+      operationId: retrieveAvailablePermissions
+      parameters:
+      - name: X-Request-ID
+        in: header
+        schema:
+          type: string
+      - name: type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        default:
+          description: default response
+          content:
+            "*/*": {}
+components:
+  schemas:
+    Endpoint:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        typeOfEnvironment:
+          type: string
+        endpointType:
+          "$ref": "#/components/schemas/RefDataItemDTO"
+        customProperties:
+          type: array
+          items:
+            "$ref": "#/components/schemas/NameValuePairDTO"
+    NameValuePairDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    PatchServiceSpecification:
+      type: object
+      properties:
+        publishEvents:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PublishEvent"
+        endpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Endpoint"
+    PatchSpecification:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        disposition:
+          "$ref": "#/components/schemas/RefDataItemDTO"
+        stateTransitionComment:
+          type: string
+        customProperties:
+          type: array
+          items:
+            "$ref": "#/components/schemas/NameValuePairDTO"
+        serviceSpecification:
+          "$ref": "#/components/schemas/PatchServiceSpecification"
+        dispositionCode:
+          type: string
+          writeOnly: true
+    PublishEvent:
+      type: object
+      properties:
+        destinationSystemName:
+          type: string
+        destinationEndpoint:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date-time
+        identifier:
+          type: string
+        log:
+          type: string
+    RefDataItemDTO:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Lifecycle
+        code:
+          type: string
